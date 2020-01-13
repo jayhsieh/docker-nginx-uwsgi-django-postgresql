@@ -1,0 +1,43 @@
+version: '3'
+services:
+
+  web:
+    container_name: django-container
+    image: django:20200112
+    restart: always
+    ports:
+      - 8008:8008
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && uwsgi --ini uwsgi.ini"
+    volumes:
+      - ./project/.:/code
+      - socket:/home
+    depends_on:
+      - db
+
+  db:
+    container_name: postgresql
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data/
+  
+  nginx:
+    container_name: my-nginx
+    build: ./nginx/.
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - web
+    volumes:
+      - socket:/home
+
+volumes:
+  pgdata:
+  socket:
