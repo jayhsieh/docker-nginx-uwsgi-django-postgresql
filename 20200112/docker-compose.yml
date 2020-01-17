@@ -37,6 +37,7 @@ services:
       - web
     volumes:
       - socket:/home
+      - ./project/static/.:/static
 
 volumes:
   pgdata:
