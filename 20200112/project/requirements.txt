@@ -1,3 +1,9 @@
 django<3,>=2
 psycopg2>=2.7,<3.0
 uwsgi
+
+# ====================================================
+# Below is customized for myself, so do not COPY directly
+# ====================================================
+captcha
+python-dateutil
